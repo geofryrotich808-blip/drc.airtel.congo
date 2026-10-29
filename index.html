@@ -1,41 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My First Website</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #f0f4f8;
-      padding: 50px 20px;
-    }
-    .card {
-      background: white;
-      max-width: 500px;
-      margin: auto;
-      padding: 30px;
-      border-radius: 15px;
-    }
-    h1 { color: #087f5b; }
-    button {
-      background: #087f5b;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Airtel RDC - Data Bundles</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  color: #222;
+}
+
+header {
+  background: #e60000;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+header span {
+  font-size: 13px;
+}
+
+.hero {
+  background: linear-gradient(135deg, #e60000, #a90000);
+  color: white;
+  text-align: center;
+  padding: 55px 20px;
+}
+
+.hero h1 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 850px;
+  margin: 30px auto;
+  padding: 15px;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.bundle {
+  background: white;
+  border-radius: 14px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+  max-width: 380px;
+  margin: auto;
+  border-top: 5px solid #e60000;
+}
+
+.bundle h2 {
+  color: #e60000;
+  font-size: 28px;
+}
+
+.price {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 15px;
+}
+
+.bundle button {
+  background: #e60000;
+  color: white;
+  border: none;
+  padding: 14px;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.bundle button:hover {
+  background: #b90000;
+}
+
+.order {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  margin-top: 25px;
+}
+
+input, select {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0 18px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  font-size: 15px;
+}
+
+.payment {
+  background: #fff1f1;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+}
+
+.note {
+  color: #666;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+footer {
+  background: #222;
+  color: white;
+  text-align: center;
+  padding: 25px 15px;
+  margin-top: 40px;
+  font-size: 13px;
+}
+</style>
 </head>
+
 <body>
-  <div class="card">
-    <h1>Welcome to My Website!</h1>
-    <p>I am building my own website using code.</p>
-    <button onclick="alert('My website is working!')">
-      Click Me
+
+<header>
+  <div class="logo">AIRTEL RDC</div>
+  <span>DATA BUNDLES</span>
+</header>
+
+<section class="hero">
+  <h1>Stay Connected!</h1>
+  <p>
+    Discover our available internet bundle offers.
+    Choose your preferred package and get started.
+  </p>
+</section>
+
+<main class="container">
+
+  <h2 class="section-title">Available Data Packages</h2>
+
+  <div class="bundle">
+    <h2>30 Go</h2>
+    <p>Internet Data Bundle</p>
+    <div class="price">3.5</div>
+    <p>Selected package</p>
+    <button onclick="selectBundle()">
+      Choose This Bundle
     </button>
   </div>
+
+  <section class="order" id="order">
+    <h2>Place Your Order</h2>
+
+    <label for="phone">Airtel RDC Phone Number</label>
+    <input
+      id="phone"
+      type="tel"
+      placeholder="Enter your Airtel number"
+    >
+
+    <label for="package">Selected Package</label>
+    <select id="package">
+      <option value="30 Go">30 Go - 3.5</option>
+    </select>
+
+    <div class="payment">
+      <strong>Payment Method</strong>
+      <p>Airtel Money</p>
+      <small>Payment integration will be added later.</small>
+    </div>
+
+    <button type="button" onclick="placeOrder()">
+      Continue
+    </button>
+
+    <p class="note">
+      This is a demonstration order form. No payment
+      will be collected and no data will be activated yet.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <p>Internet Bundle Services - DR Congo</p>
+  <p>Independent service. Not an official Airtel website.</p>
+  <p>© 2026 All Rights Reserved</p>
+</footer>
+
+<script>
+function selectBundle() {
+  document.getElementById("order").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+function placeOrder() {
+  const phone = document.getElementById("phone").value.trim();
+
+  if (!/^\+?243[0-9]{9}$/.test(phone)) {
+    alert("Please enter a valid DR Congo phone number beginning with 243.");
+    return;
+  }
+
+  alert("Your demo order form is working! Payment integration is not yet connected.");
+}
+</script>
+
 </body>
 </html>

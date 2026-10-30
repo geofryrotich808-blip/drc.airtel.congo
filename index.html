@@ -255,15 +255,7 @@ async function placeOrder() {
     button.disabled = false;
     button.textContent = "Continue";
   }
-}
-  const phone = document.getElementById("phone").value.trim();
-
-  if (!/^\+?243[0-9]{9}$/.test(phone)) {
-    alert("Please enter a valid DR Congo phone number beginning with 243.");
-    return;
-  }
-
-  alert("Your demo order form is working! Payment integration is not yet connected.");
+ }
 }
 </script>
 

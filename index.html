@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Airtel RDC - Data Bundles</title>
+<title>Independent DR Congo Data Bundles</title>
 
 <style>
 * {
@@ -85,7 +85,8 @@ header span {
   margin: 15px;
 }
 
-.bundle button {
+.bundle button,
+.order button {
   background: #e60000;
   color: white;
   border: none;
@@ -96,7 +97,8 @@ header span {
   cursor: pointer;
 }
 
-.bundle button:hover {
+.bundle button:hover,
+.order button:hover {
   background: #b90000;
 }
 
@@ -164,7 +166,7 @@ footer {
     <p>Internet Data Bundle</p>
     <div class="price">3.5</div>
     <p>Selected package</p>
-    <button onclick="selectBundle()">
+    <button type="button" onclick="selectBundle()">
       Choose This Bundle
     </button>
   </div>
@@ -176,7 +178,9 @@ footer {
     <input
       id="phone"
       type="tel"
-      placeholder="Enter your Airtel number"
+      placeholder="Enter number, e.g. 243XXXXXXXXX"
+      autocomplete="tel"
+      required
     >
 
     <label for="package">Selected Package</label>
@@ -187,16 +191,16 @@ footer {
     <div class="payment">
       <strong>Payment Method</strong>
       <p>Airtel Money</p>
-      <small>Payment integration will be added later.</small>
+      <small>Payment integration is not yet connected.</small>
     </div>
 
-    <button type="button" onclick="placeOrder()">
+    <button id="orderButton" type="button" onclick="placeOrder()">
       Continue
     </button>
 
     <p class="note">
-      This is a demonstration order form. No payment
-      will be collected and no data will be activated yet.
+      Demonstration order form only. No payment will be collected
+      and no data will be activated yet.
     </p>
   </section>
 
@@ -218,13 +222,14 @@ function selectBundle() {
 async function placeOrder() {
   const phone = document.getElementById("phone").value.trim();
   const packageName = document.getElementById("package").value;
+  const button = document.getElementById("orderButton");
 
+  // Accept either 243XXXXXXXXX or +243XXXXXXXXX
   if (!/^\+?243[0-9]{9}$/.test(phone)) {
     alert("Please enter a valid DR Congo phone number beginning with 243.");
     return;
   }
 
-  const button = document.querySelector("#order button");
   button.disabled = true;
   button.textContent = "Sending...";
 
@@ -233,7 +238,9 @@ async function placeOrder() {
       "https://geoffrycongo-orders.geofryrotich808.workers.dev/order",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           phone: phone,
           package: packageName,
@@ -248,14 +255,19 @@ async function placeOrder() {
       throw new Error("Order could not be sent.");
     }
 
-    alert("Your order has been received. Status: Pending payment.");
+    alert(
+      "Your order has been received.\n" +
+      "Reference: " + (result.reference || "Received") +
+      "\nStatus: Pending payment.\nNo payment has been made."
+    );
+
   } catch (error) {
+    console.error("Order error:", error);
     alert("We could not send your order. Please try again.");
   } finally {
     button.disabled = false;
     button.textContent = "Continue";
   }
- }
 }
 </script>
 

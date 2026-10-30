@@ -4,14 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Independent DR Congo Data Bundles</title>
+
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: #f5f5f5;
   color: #222;
 }
+
 header {
   background: #e60000;
   color: white;
@@ -20,22 +25,44 @@ header {
   justify-content: space-between;
   align-items: center;
 }
-.logo { font-size: 25px; font-weight: bold; }
-header span { font-size: 13px; }
+
+.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+header span {
+  font-size: 13px;
+}
+
 .hero {
   background: linear-gradient(135deg, #e60000, #a90000);
   color: white;
   text-align: center;
   padding: 55px 20px;
 }
-.hero h1 { font-size: 32px; margin-bottom: 12px; }
-.hero p { font-size: 16px; line-height: 1.6; }
+
+.hero h1 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
 .container {
   max-width: 850px;
   margin: 30px auto;
   padding: 15px;
 }
-.section-title { text-align: center; margin-bottom: 25px; }
+
+.section-title {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
 .bundle {
   background: white;
   border-radius: 14px;
@@ -46,9 +73,20 @@ header span { font-size: 13px; }
   margin: auto;
   border-top: 5px solid #e60000;
 }
-.bundle h2 { color: #e60000; font-size: 28px; }
-.price { font-size: 32px; font-weight: bold; margin: 15px; }
-.bundle button, .order button {
+
+.bundle h2 {
+  color: #e60000;
+  font-size: 28px;
+}
+
+.price {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 15px;
+}
+
+.bundle button,
+.order button {
   background: #e60000;
   color: white;
   border: none;
@@ -58,13 +96,19 @@ header span { font-size: 13px; }
   font-size: 16px;
   cursor: pointer;
 }
-.bundle button:hover, .order button:hover { background: #b90000; }
+
+.bundle button:hover,
+.order button:hover {
+  background: #b90000;
+}
+
 .order {
   background: white;
   padding: 25px;
   border-radius: 12px;
   margin-top: 25px;
 }
+
 input, select {
   width: 100%;
   padding: 14px;
@@ -73,7 +117,20 @@ input, select {
   border-radius: 7px;
   font-size: 15px;
 }
-.note { color: #666; font-size: 13px; line-height: 1.5; }
+
+.payment {
+  background: #fff1f1;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+}
+
+.note {
+  color: #666;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 footer {
   background: #222;
   color: white;
@@ -84,6 +141,7 @@ footer {
 }
 </style>
 </head>
+
 <body>
 
 <header>
@@ -93,11 +151,14 @@ footer {
 
 <section class="hero">
   <h1>Stay Connected!</h1>
-  <p>Discover our available internet bundle offers.
-  Choose your preferred package and get started.</p>
+  <p>
+    Discover our available internet bundle offers.
+    Choose your preferred package and get started.
+  </p>
 </section>
 
 <main class="container">
+
   <h2 class="section-title">Available Data Packages</h2>
 
   <div class="bundle">
@@ -114,23 +175,35 @@ footer {
     <h2>Place Your Order</h2>
 
     <label for="phone">Airtel RDC Phone Number</label>
-    <input id="phone" type="tel"
-      placeholder="243XXXXXXXXX" autocomplete="tel">
+    <input
+      id="phone"
+      type="tel"
+      placeholder="Enter number, e.g. 243XXXXXXXXX"
+      autocomplete="tel"
+      required
+    >
 
     <label for="package">Selected Package</label>
     <select id="package">
       <option value="30 Go">30 Go - 3.5</option>
     </select>
 
+    <div class="payment">
+      <strong>Payment Method</strong>
+      <p>Airtel Money</p>
+      <small>Payment integration is not yet connected.</small>
+    </div>
+
     <button id="orderButton" type="button" onclick="placeOrder()">
       Continue
     </button>
 
     <p class="note">
-      A four-digit order reference will be generated for tracking.
-      It is not an Airtel PIN or account verification code.
+      Demonstration order form only. No payment will be collected
+      and no data will be activated yet.
     </p>
   </section>
+
 </main>
 
 <footer>
@@ -151,6 +224,7 @@ async function placeOrder() {
   const packageName = document.getElementById("package").value;
   const button = document.getElementById("orderButton");
 
+  // Accept either 243XXXXXXXXX or +243XXXXXXXXX
   if (!/^\+?243[0-9]{9}$/.test(phone)) {
     alert("Please enter a valid DR Congo phone number beginning with 243.");
     return;
@@ -164,7 +238,9 @@ async function placeOrder() {
       "https://geoffrycongo-orders.geofryrotich808.workers.dev/order",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           phone: phone,
           package: packageName,
@@ -179,19 +255,14 @@ async function placeOrder() {
       throw new Error("Order could not be sent.");
     }
 
-    // Four-digit reference for order tracking only.
-    const reference = String(
-      Math.floor(1000 + Math.random() * 9000)
-    );
-
     alert(
       "Your order has been received.\n" +
-      "Order reference: " + reference +
-      "\nStatus: Pending review."
+      "Reference: " + (result.reference || "Received") +
+      "\nStatus: Pending payment.\nNo payment has been made."
     );
 
   } catch (error) {
-    console.error(error);
+    console.error("Order error:", error);
     alert("We could not send your order. Please try again.");
   } finally {
     button.disabled = false;
@@ -199,5 +270,6 @@ async function placeOrder() {
   }
 }
 </script>
+
 </body>
 </html>

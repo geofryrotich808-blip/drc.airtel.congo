@@ -215,7 +215,47 @@ function selectBundle() {
   });
 }
 
-function placeOrder() {
+async function placeOrder() {
+  const phone = document.getElementById("phone").value.trim();
+  const packageName = document.getElementById("package").value;
+
+  if (!/^\+?243[0-9]{9}$/.test(phone)) {
+    alert("Please enter a valid DR Congo phone number beginning with 243.");
+    return;
+  }
+
+  const button = document.querySelector("#order button");
+  button.disabled = true;
+  button.textContent = "Sending...";
+
+  try {
+    const response = await fetch(
+      "https://geoffrycongo-orders.geofryrotich808.workers.dev/order",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phone: phone,
+          package: packageName,
+          price: "3.5"
+        })
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error("Order could not be sent.");
+    }
+
+    alert("Your order has been received. Status: Pending payment.");
+  } catch (error) {
+    alert("We could not send your order. Please try again.");
+  } finally {
+    button.disabled = false;
+    button.textContent = "Continue";
+  }
+}
   const phone = document.getElementById("phone").value.trim();
 
   if (!/^\+?243[0-9]{9}$/.test(phone)) {
